@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stakeholder Questionnaire - Healing School Department</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .time-estimate {
+            background: #f0f7ff;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .section-title {
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+        }
+        
+        .question label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .radio-group label,
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .rating-scale {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .rating-scale label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .helper-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-message {
+            display: none;
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Submitting your response...</h3>
+            <p>Please wait</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Stakeholder Questionnaire</h1>
+            <p>Business Transformation Project - Healing School Department</p>
+        </div>
+        
+        <div class="time-estimate">
+            <strong>⏱️ Estimated Time:</strong> 15 minutes<br>
+            <strong>📧 Contact:</strong> info@gloleansigma.com | 08022225585
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <h3>✅ Success!</h3>
+            <p>Your response has been submitted successfully. Thank you for your participation!</p>
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            <h3>⚠️ Submission Error</h3>
+            <p id="errorText">There was an error submitting your response. Please try again or contact us at info@gloleansigma.com</p>
+        </div>
+        
+        <form id="stakeholderForm">
+            
+            <!-- SECTION 1: Basic Information -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Basic Information
+                </h2>
+                
+                <div class="question">
+                    <label>Name <span class="required">*</span></label>
+                    <input type="text" name="name" required>
+                </div>
+                
+                <div class="input-group">
+                    <div class="question">
+                        <label>Title/Position <span class="required">*</span></label>
+                        <input type="text" name="position" required>
+                    </div>
+                    
+                    <div class="question">
+                        <label>Department <span class="required">*</span></label>
+                        <input type="text" name="department" required>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <div class="question">
+                        <label>Years in Current Role</label>
+                        <input type="number" name="years_role" min="0" step="0.5">
+                    </div>
+                    
+                    <div class="question">
+                        <label>Email</label>
+                        <input type="email" name="email">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 2: Your Work -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Your Work
+                </h2>
+                
+                <div class="question">
+                    <label>Briefly describe your primary responsibilities <span class="required">*</span></label>
+                    <textarea name="responsibilities" required></textarea>
+                    <div class="helper-text">2-3 sentences</div>
+                </div>
+                
+                <div class="question">
+                    <label>What key systems/tools do you use? <span class="required">*</span></label>
+                    <textarea name="tools" required></textarea>
+                    <div class="helper-text">List the main ones</div>
+                </div>
+                
+                <div class="question">
+                    <label>How much time do you spend on value-added work vs. administrative tasks?</label>
+                    <div class="input-group">
+                        <div>
+                            <label style="font-weight: normal;">Value-added work (%)</label>
+                            <input type="number" name="value_work" min="0" max="100">
+                        </div>
+                        <div>
+                            <label style="font-weight: normal;">Administrative tasks (%)</label>
+                            <input type="number" name="admin_work" min="0" max="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 3: Challenges -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Key Challenges
+                </h2>
+                
+                <div class="question">
+                    <label>What is your BIGGEST challenge or frustration? <span class="required">*</span></label>
+                    <textarea name="biggest_challenge" required></textarea>
+                    <div class="helper-text">Be specific</div>
+                </div>
+                
+                <div class="question">
+                    <label>How often does this occur?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="challenge_frequency" value="daily"> Daily</label>
+                        <label><input type="radio" name="challenge_frequency" value="weekly"> Weekly</label>
+                        <label><input type="radio" name="challenge_frequency" value="monthly"> Monthly</label>
+                        <label><input type="radio" name="challenge_frequency" value="occasionally"> Occasionally</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <label>Where do you see the most waste? (Check all that apply)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="waste" value="waiting"> Waiting time (approvals, information, etc.)</label>
+                        <label><input type="checkbox" name="waste" value="rework"> Rework or corrections</label>
+                        <label><input type="checkbox" name="waste" value="unnecessary"> Unnecessary steps</label>
+                        <label><input type="checkbox" name="waste" value="communication"> Communication breakdowns</label>
+                        <label><input type="checkbox" name="waste" value="duplication"> Duplication of effort</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <label>What bottlenecks slow down work?</label>
+                    <textarea name="bottlenecks"></textarea>
+                </div>
+            </div>
+            
+            <!-- SECTION 4: Quality & Performance -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Quality & Performance
+                </h2>
+                
+                <div class="question">
+                    <label>Rate the overall quality of work output in your area <span class="required">*</span></label>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="quality_rating" value="1" required> 1</label>
+                        <label><input type="radio" name="quality_rating" value="2"> 2</label>
+                        <label><input type="radio" name="quality_rating" value="3"> 3</label>
+                        <label><input type="radio" name="quality_rating" value="4"> 4</label>
+                        <label><input type="radio" name="quality_rating" value="5"> 5</label>
+                        <label><input type="radio" name="quality_rating" value="6"> 6</label>
+                        <label><input type="radio" name="quality_rating" value="7"> 7</label>
+                        <label><input type="radio" name="quality_rating" value="8"> 8</label>
+                        <label><input type="radio" name="quality_rating" value="9"> 9</label>
+                        <label><input type="radio" name="quality_rating" value="10"> 10</label>
+                    </div>
+                    <div class="helper-text">1 = Poor, 10 = Excellent</div>
+                </div>
+                
+                <div class="question">
+                    <label>What prevents you from performing at your best?</label>
+                    <textarea name="performance_barriers"></textarea>
+                </div>
+                
+                <div class="question">
+                    <label>Rate communication effectiveness:</label>
+                    <div style="margin-top: 10px;">
+                        <label style="display: block; margin-bottom: 10px;">Within your team</label>
+                        <div class="radio-group" style="margin-bottom: 20px;">
+                            <label><input type="radio" name="comm_team" value="excellent"> Excellent</label>
+                            <label><input type="radio" name="comm_team" value="good"> Good</label>
+                            <label><input type="radio" name="comm_team" value="fair"> Fair</label>
+                            <label><input type="radio" name="comm_team" value="poor"> Poor</label>
+                        </div>
+                        
+                        <label style="display: block; margin-bottom: 10px;">Between departments</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="comm_departments" value="excellent"> Excellent</label>
+                            <label><input type="radio" name="comm_departments" value="good"> Good</label>
+                            <label><input type="radio" name="comm_departments" value="fair"> Fair</label>
+                            <label><input type="radio" name="comm_departments" value="poor"> Poor</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 5: Improvement Opportunities -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Improvement & Vision
+                </h2>
+                
+                <div class="question">
+                    <label>If you could fix ONE thing about how work gets done, what would it be? <span class="required">*</span></label>
+                    <textarea name="one_fix" required></textarea>
+                </div>
+                
+                <div class="question">
+                    <label>What processes could be automated or simplified?</label>
+                    <textarea name="automation_ideas"></textarea>
+                </div>
+                
+                <div class="question">
+                    <label>What's working really well that we should preserve?</label>
+                    <textarea name="preserve"></textarea>
+                </div>
+                
+                <div class="question">
+                    <label>What training or support would help you do your job better?</label>
+                    <textarea name="training_needs"></textarea>
+                </div>
+            </div>
+            
+            <!-- SECTION 6: Change Readiness -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    About This Project
+                </h2>
+                
+                <div class="question">
+                    <label>How comfortable are you with change and new technology?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="change_comfort" value="very_comfortable"> Very comfortable</label>
+                        <label><input type="radio" name="change_comfort" value="comfortable"> Somewhat comfortable</label>
+                        <label><input type="radio" name="change_comfort" value="neutral"> Neutral</label>
+                        <label><input type="radio" name="change_comfort" value="uncomfortable"> Somewhat uncomfortable</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <label>What excites you about this transformation project?</label>
+                    <textarea name="excitement"></textarea>
+                </div>
+                
+                <div class="question">
+                    <label>Any concerns about the project?</label>
+                    <textarea name="concerns"></textarea>
+                </div>
+                
+                <div class="question">
+                    <label>Any additional comments or insights?</label>
+                    <textarea name="additional_comments"></textarea>
+                </div>
+            </div>
+            
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Questionnaire</button>
+                <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                    Your responses will be kept confidential and anonymized in reports.
+                </p>
+            </div>
+            
+        </form>
+    </div>
+    
+    <script>
+        // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAj_YvRRv020qAEeUHP1vhPGcM7HcaBdkuhZ0Bx31L9oiD1ZHoM1H6OjWHRb1IQUYsEg/exec';
+        
+        document.getElementById('stakeholderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading overlay
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            document.getElementById('submitBtn').disabled = true;
+            
+            // Hide previous messages
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {
+                timestamp: new Date().toISOString()
+            };
+            
+            // Process regular fields
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    // Handle multiple checkboxes with same name
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Convert arrays to comma-separated strings for Google Sheets
+            for (let key in data) {
+                if (Array.isArray(data[key])) {
+                    data[key] = data[key].join(', ');
+                }
+            }
+            
+            try {
+                // Send to Google Sheets
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                // Hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+                
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Clear form
+                this.reset();
+                
+                // Clear localStorage
+                clearLocalStorage();
+                
+                // Scroll to success message
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                
+                // Hide loading overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+                
+                // Show error message
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorText').textContent = 
+                    'There was an error submitting your response. Please try again or contact us at info@gloleansigma.com. Error: ' + error.message;
+                
+                // Scroll to error message
+                document.getElementById('errorMessage').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+        
+        // Auto-save to localStorage
+        const form = document.getElementById('stakeholderForm');
+        const inputs = form.querySelectorAll('input, textarea, select');
+        
+        function clearLocalStorage() {
+            inputs.forEach(input => {
+                localStorage.removeItem('stakeholder_' + input.name);
+            });
+        }
+        
+        inputs.forEach(input => {
+            // Load saved data
+            const saved = localStorage.getItem('stakeholder_' + input.name);
+            if (saved && input.type !== 'radio' && input.type !== 'checkbox') {
+                input.value = saved;
+            } else if (saved && input.type === 'radio') {
+                if (input.value === saved) input.checked = true;
+            } else if (saved && input.type === 'checkbox') {
+                try {
+                    const savedArray = JSON.parse(saved);
+                    if (savedArray.includes(input.value)) input.checked = true;
+                } catch (e) {
+                    // Ignore parse errors
+                }
+            }
+            
+            // Save on change
+            input.addEventListener('change', function() {
+                if (this.type === 'checkbox') {
+                    const checkboxes = document.querySelectorAll(`input[name="${this.name}"]:checked`);
+                    const values = Array.from(checkboxes).map(cb => cb.value);
+                    localStorage.setItem('stakeholder_' + this.name, JSON.stringify(values));
+                } else {
+                    localStorage.setItem('stakeholder_' + this.name, this.value);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
